@@ -12,9 +12,7 @@ module.exports = {
         filename: "final.js",
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: 'index.html'
-        }),
+        new HtmlWebpackPlugin(),
         new WasmPackPlugin({
             crateDirectory: path.resolve(__dirname, '.')
         }),

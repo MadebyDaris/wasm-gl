@@ -1,5 +1,3 @@
-import * as wasm from './pkg';
+import * as m from "./pkg"; 
 
-let result = wasm.add(2, 8);
-
-console.log(result);
+m.greet('World!');
