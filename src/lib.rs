@@ -1,6 +1,16 @@
+extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-pub fn add(n1: i32, n2: i32) -> i32 {
-    n1 + n2
+extern "C" {
+    fn alert(s: &str);
 }
+
+#[wasm_bindgen]
+pub fn greet(name: &str) {
+    let rc = format!("Hello, {}!", name);
+    unsafe {alert(&rc)};
+}
+
+// use web_sys::*;
+// use web_sys::WebGlRenderingContext as GL;
