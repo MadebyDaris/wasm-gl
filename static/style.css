@@ -1,0 +1,21 @@
+h1 {
+    /* text-align: center; */
+    color: white;
+    font-size: 35px;
+}
+
+#h1-container {
+    /* height: 400px; */
+    position: relative;
+    border: 3px solid-green;
+}
+
+#main-page {
+    left: 30%;
+    top: 30%;
+    position: absolute;
+}
+
+body {
+    color: darkgrey;
+}
