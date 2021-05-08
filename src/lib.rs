@@ -1,9 +1,9 @@
 extern crate wasm_bindgen;
-
+mod shader;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-
 use web_sys::{WebGlProgram, WebGlRenderingContext, WebGlShader};
+
 
 #[wasm_bindgen(start)]
 pub fn start()-> Result<(), JsValue> {
@@ -13,35 +13,16 @@ pub fn start()-> Result<(), JsValue> {
     let canvas: web_sys::HtmlCanvasElement = canvas.dyn_into::<web_sys::HtmlCanvasElement>()?;
 
     // Setup of Canvas as a WebGL context to put our things in
-    let context = canvas
+    let mut context = canvas
         .get_context("webgl")?
         .unwrap()
         .dyn_into::<WebGlRenderingContext>()?;
-    
+    let (f,v ) = ("res/shader.fs", "res/shader.vs");
+    let mut vert_shader = shader::Shader::new(&v);
+    vert_shader.compile(&context, WebGlRenderingContext::VERTEX_SHADER);
 
-    let vert_shader = compile_shader(
-        &context, 
-        WebGlRenderingContext::VERTEX_SHADER,
-        
-        r#"
-        attribute vec4 pos;
-        void main() {
-            gl_Position = pos;
-        }
-        "#,
-    )?;
-
-
-    let frag_shader = compile_shader(
-        &context, 
-        WebGlRenderingContext::FRAGMENT_SHADER,
-        
-        r#"
-        void main() {
-            gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-        }
-        "#,
-    )?;
+    let mut frg_shader = shader::Shader::new(&f);
+    frg_shader.compile(&context, WebGlRenderingContext::FRAGMENT_SHADER);
 
     // Creating a program linking the vertex shader and fragment to it
     let program = link_program(&context, &vert_shader, &frag_shader)?;
@@ -79,15 +60,15 @@ pub fn start()-> Result<(), JsValue> {
 pub fn link_program(
     
     context: &WebGlRenderingContext,
-    vertShader: &WebGlShader,
-    fragShader: &WebGlShader,) -> Result<WebGlProgram, String> {
+    vert_shader: &WebGlShader,
+    frag_shader: &WebGlShader,) -> Result<WebGlProgram, String> {
     
     let program = context
         .create_program()
         .ok_or_else(|| String::from("Unable to create shader object"))?;
 
-    context.attach_shader(&program, vertShader);
-    context.attach_shader(&program, fragShader);
+    context.attach_shader(&program, vert_shader);
+    context.attach_shader(&program, frag_shader);
     context.link_program(&program);
 
     if context
@@ -105,30 +86,30 @@ pub fn link_program(
 
 
 
-// Compile Shader
-pub fn compile_shader(
-    context: &WebGlRenderingContext,
-    shader_type: u32,
-    shader_source: &str) -> Result<WebGlShader, String> {
+// // Compile Shader
+// pub fn compile_shader(
+//     context: &WebGlRenderingContext,
+//     shader_type: u32,
+//     shader_source: &str) -> Result<WebGlShader, String> {
     
-        let shader = context
-            .create_shader(shader_type)
-            .ok_or_else(|| String::from("Unable to create shader object"))?;
+//         let shader = context
+//             .create_shader(shader_type)
+//             .ok_or_else(|| String::from("Unable to create shader object"))?;
 
-        context.shader_source(&shader, shader_source);
-        context.compile_shader(&shader);
+//         context.shader_source(&shader, shader_source);
+//         context.compile_shader(&shader);
 
-        if context
-            .get_shader_parameter(&shader, WebGlRenderingContext::COMPILE_STATUS)
-            .as_bool()
-            .unwrap_or(false)
-        {
-            Ok(shader)
-        }
-        else {
-            Err(context
-                .get_shader_info_log(&shader)
-                .unwrap_or_else(|| String::from("Unknown error creating shader"))
-            )
-        }
-    }
+//         if context
+//             .get_shader_parameter(&shader, WebGlRenderingContext::COMPILE_STATUS)
+//             .as_bool()
+//             .unwrap_or(false)
+//         {
+//             Ok(shader)
+//         }
+//         else {
+//             Err(context
+//                 .get_shader_info_log(&shader)
+//                 .unwrap_or_else(|| String::from("Unknown error creating shader"))
+//             )
+//         }
+//     }
