@@ -17,14 +17,19 @@ pub fn start()-> Result<(), JsValue> {
         .get_context("webgl")?
         .unwrap()
         .dyn_into::<WebGlRenderingContext>()?;
-    let (f,v ) = ("res/shader.fs", "res/shader.vs");
+
+
+
+    let (f,v ) = ("/res/shader.fs", "/res/shader.vs");
+
     let mut vert = shader::Shader::new(&v);
     let vert_shader = vert.compile(&context, WebGlRenderingContext::VERTEX_SHADER)?;
 
+    // we have 2 variables as frg is of type Shader and not WebGlShader, and so link_program doesnt accept it
     let mut frg = shader::Shader::new(&f);
     let frg_shader = frg.compile(&context, WebGlRenderingContext::FRAGMENT_SHADER)?;
 
-
+    
 
     // Creating a program linking the vertex shader and fragment to it
     let program = link_program(&context, &vert_shader, &frg_shader)?;
@@ -85,33 +90,3 @@ pub fn link_program(
             .unwrap_or_else(|| String::from("Unknown error creating shader")))
     }
 }
-
-
-
-// // Compile Shader
-// pub fn compile_shader(
-//     context: &WebGlRenderingContext,
-//     shader_type: u32,
-//     shader_source: &str) -> Result<WebGlShader, String> {
-    
-//         let shader = context
-//             .create_shader(shader_type)
-//             .ok_or_else(|| String::from("Unable to create shader object"))?;
-
-//         context.shader_source(&shader, shader_source);
-//         context.compile_shader(&shader);
-
-//         if context
-//             .get_shader_parameter(&shader, WebGlRenderingContext::COMPILE_STATUS)
-//             .as_bool()
-//             .unwrap_or(false)
-//         {
-//             Ok(shader)
-//         }
-//         else {
-//             Err(context
-//                 .get_shader_info_log(&shader)
-//                 .unwrap_or_else(|| String::from("Unknown error creating shader"))
-//             )
-//         }
-//     }

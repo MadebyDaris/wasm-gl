@@ -1,6 +1,5 @@
 use std::{fs, str};
 use std::io::prelude::*;
-use std::fs::File;
 // object-oriented programing test
 use web_sys::{WebGlRenderingContext, WebGlShader};
 
