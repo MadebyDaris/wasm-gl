@@ -17,7 +17,8 @@ impl Shader {
         // Open files
       
         let code = fs::read_to_string(path).expect("Something went wrong reading the file");
-        Shader {code}
+        
+        Shader { code }
     }
 
     // Compile Shader

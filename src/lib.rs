@@ -18,14 +18,16 @@ pub fn start()-> Result<(), JsValue> {
         .unwrap()
         .dyn_into::<WebGlRenderingContext>()?;
     let (f,v ) = ("res/shader.fs", "res/shader.vs");
-    let mut vert_shader = shader::Shader::new(&v);
-    vert_shader.compile(&context, WebGlRenderingContext::VERTEX_SHADER);
+    let mut vert = shader::Shader::new(&v);
+    let vert_shader = vert.compile(&context, WebGlRenderingContext::VERTEX_SHADER)?;
 
-    let mut frg_shader = shader::Shader::new(&f);
-    frg_shader.compile(&context, WebGlRenderingContext::FRAGMENT_SHADER);
+    let mut frg = shader::Shader::new(&f);
+    let frg_shader = frg.compile(&context, WebGlRenderingContext::FRAGMENT_SHADER)?;
+
+
 
     // Creating a program linking the vertex shader and fragment to it
-    let program = link_program(&context, &vert_shader, &frag_shader)?;
+    let program = link_program(&context, &vert_shader, &frg_shader)?;
     context.use_program(Some(&program));
     
     let vertices: [f32; 9] = [-0.6, -0.7, 0.0, 
