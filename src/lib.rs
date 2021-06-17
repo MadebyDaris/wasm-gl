@@ -4,36 +4,15 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use web_sys::{WebGlProgram, WebGlRenderingContext, WebGlShader};
 
+mod setup;
 
 #[wasm_bindgen(start)]
 pub fn start()-> Result<(), JsValue> {
 
-    let document = web_sys::window().unwrap().document().unwrap();
-    let canvas = document.get_element_by_id("canvas").unwrap();
-    let canvas: web_sys::HtmlCanvasElement = canvas.dyn_into::<web_sys::HtmlCanvasElement>()?;
-
-    // Setup of Canvas as a WebGL context to put our things in
-    let mut context = canvas
-        .get_context("webgl")?
-        .unwrap()
-        .dyn_into::<WebGlRenderingContext>()?;
-
-
-
-    let (f,v ) = ("/res/shader.fs", "/res/shader.vs");
-
-    let mut vert = shader::Shader::new(&v);
-    let vert_shader = vert.compile(&context, WebGlRenderingContext::VERTEX_SHADER)?;
-
-    // we have 2 variables as frg is of type Shader and not WebGlShader, and so link_program doesnt accept it
-    let mut frg = shader::Shader::new(&f);
-    let frg_shader = frg.compile(&context, WebGlRenderingContext::FRAGMENT_SHADER)?;
-
-    
+    // Setup of Canvas as a WebGL context from setup  
+    let mut gl = setup::init_glctx().unwrap();
 
     // Creating a program linking the vertex shader and fragment to it
-    let program = link_program(&context, &vert_shader, &frg_shader)?;
-    context.use_program(Some(&program));
     
     let vertices: [f32; 9] = [-0.6, -0.7, 0.0, 
                             0.7, -0.7, 0.0, 
@@ -51,6 +30,7 @@ pub fn start()-> Result<(), JsValue> {
             WebGlRenderingContext::STATIC_DRAW
         );
     }
+    
     context.vertex_attrib_pointer_with_i32(0,3,WebGlRenderingContext::FLOAT, false, 0, 0);
     context.enable_vertex_attrib_array(0);
 

@@ -1,9 +1,16 @@
+extern crate wasm_bindgen;
+
 use std::{fs, str};
 use std::io::prelude::*;
+
 // object-oriented programing test
 use web_sys::{WebGlRenderingContext, WebGlShader};
+use wasm_bindgen::prelude::*;
+use wasm_bindgen::JsCast;
 
 
+
+#[wasm_bindgen(start)]
 pub struct Shader {
     code: String,
 }
@@ -21,8 +28,11 @@ impl Shader {
     }
 
     // Compile Shader
-    pub fn compile( &mut self, context: &WebGlRenderingContext,
-    shader_type: u32) -> Result<WebGlShader, String> {
+    pub fn compile( 
+        &mut self, 
+        context: &WebGlRenderingContext,
+        shader_type: u32
+    ) -> Result<WebGlShader, String> {
     
         let shader = context
             .create_shader(shader_type)
@@ -36,13 +46,15 @@ impl Shader {
             .as_bool()
             .unwrap_or(false)
         {
-            Ok(shader)
-        }
+
+            Ok(shader)}
+
         else {
             Err(context
                 .get_shader_info_log(&shader)
                 .unwrap_or_else(|| String::from("Unknown error creating shader"))
             )
         }
+
     }
 }
