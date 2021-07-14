@@ -1,20 +1,18 @@
 import * as m from "./pkg"; 
 
 const rust = import('./pkg/crb');
-const canvas = document.getElementById('rustCanvas');
+const canvas = document.getElementById('page');
 const gl = canvas.getContext('webgl', { antialising: true });
 
 rust.then(m => {
-    if (!gl) { alert( "webgl is broken" ) }
-
-    gl.enable(gl.BLEND);
-    gl.blendfunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    if (!gl) { alert( "webgl is broken" ) 
+        return; }
     
     const throt = 1000 / 30;
-    const client = new m.client();
+    const myclient = new m.Client();
     
     var last_draw_time = -1;
-    var initTime = date.now
+    var initTime = Date.now
 
     function render() {
         window.requestAnimationFrame(render);
@@ -23,12 +21,12 @@ rust.then(m => {
          if (currTime >=  last_draw_time ) {
             last_draw_time = currTime
 
-            if (window.width != canvas.width || window.height != canvas.height) {
-                canvas.height = window.height;
+            if (window.innerHeight != canvas.height || window.innerWidth != canvas.width) {
+                canvas.height = window.innerHeight;
                 canvas.clientHeight  = window.innerHeight;
                 canvas.style.height = window.innerHeight;
 
-                canvas.width = window.width
+                canvas.width = window.innerWidth
                 canvas.clientWidth  = window.innerWidth;
                 canvas.style.width = window.innerWidth;
 
@@ -36,9 +34,9 @@ rust.then(m => {
             }
 
             let timePassed = currTime - initTime;
-            client.update(timePassed, window.innerHeight, window.innerWidth);
-            clint.render();
+            myclient.update(timePassed, window.innerHeight, window.innerWidth);
+            myclient.render();
         }
     }
-    render()
-})
+    render();
+});

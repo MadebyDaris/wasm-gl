@@ -13,6 +13,10 @@ https://docs.rs/web-sys/0.3.50/web_sys/
 wasm-pack build
 
 ./node_modules/.bin/webpack
+
+npm run build
+
+npm run serve
 ```
 
 ### Basic Rust Program

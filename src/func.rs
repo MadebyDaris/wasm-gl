@@ -1,5 +1,4 @@
 extern crate wasm_bindgen;
-mod shader;
 
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
