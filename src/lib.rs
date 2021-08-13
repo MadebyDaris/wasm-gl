@@ -1,9 +1,13 @@
 extern crate wasm_bindgen;
 extern crate console_error_panic_hook;
 #[path = "./setup.rs"] mod setup;
-
+#[path = "./lib/gl_render.rs"] mod program;
+#[path = "./lib/res/shader_data.rs"] mod data;
 use wasm_bindgen::prelude::*;
 use web_sys::*;
+
+#[macro_use]
+extern crate lazy_static;
 
 #[wasm_bindgen]
 extern "C" {
@@ -12,25 +16,39 @@ extern "C" {
 }
 
 #[wasm_bindgen]
-pub struct Client {
+pub struct MyClient {
+    program2D: program::GlRender,
     ctx: WebGlRenderingContext
 }
 
 #[wasm_bindgen]
-impl Client {
+impl MyClient {
     #[wasm_bindgen(constructor)]
     pub fn new () -> Self {
         console_error_panic_hook::set_once();
-        let mut gl = setup::SetupCtx::new(String::from("/res/shader.fs"), String::from("/res/shader.vs"));
+        let mut gl = setup::SetupCtx::new(String::from(data::shader_vs), String::from(data::shader_fs));
         let ctx = setup::SetupCtx::init_gl_ctx(&mut gl).unwrap();
         Self {
             ctx: ctx,
+            program2D: program::GlRender::new(&gl.init_gl_ctx().unwrap())
         }
     }
 
+    pub fn update( &self)  {
+    }
 
     pub fn render( &self ) {
-        self.ctx.clear(WebGlRenderingContext::COLOR_BUFFER_BIT | WebGlRenderingContext::DEPTH_BUFFER_BIT)
+        self.ctx.clear(WebGlRenderingContext::COLOR_BUFFER_BIT | WebGlRenderingContext::DEPTH_BUFFER_BIT);
+
+        self.program2D.render(
+            &self.ctx,
+            0.,
+            10.,
+            0.,
+            10.,
+            100.,
+            100.,
+        )
     }
 }
 

@@ -7,7 +7,7 @@ use web_sys::*;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 
-#[wasm_bindgen(start)]
+#[wasm_bindgen]
 pub struct SetupCtx {
     f: String,
     v: String
@@ -46,7 +46,7 @@ impl SetupCtx {
 
         context.enable(WebGlRenderingContext::BLEND);
         context.blend_func(WebGlRenderingContext::SRC_ALPHA, WebGlRenderingContext::ONE_MINUS_SRC_ALPHA);
-        context.clear_color(0.5, 0.5, 0.5, 1.0);
+        context.clear_color(0.5, 0.7, 0.5, 1.0);
         context.clear_depth(1.);
 
         Ok(context)

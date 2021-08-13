@@ -1,7 +1,7 @@
 extern crate wasm_bindgen;
 
-use std::{fs, str};
-use std::io::prelude::*;
+use std::str;
+use std::io::prelude::*;    
 
 // object-oriented programing test
 use web_sys::{WebGlRenderingContext, WebGlShader};
@@ -13,19 +13,17 @@ pub struct Shader {
 
 impl Shader {
     // Constructor
-    pub fn new(path: &str) -> Shader {
+    pub fn new(code: &str) -> Self {
         // assert!(vertexPath = String::as_str('{}'));
         // Shader { vertexPath: "hello", fragmentPath: "hello" };
         // Open files
-      
-        let code = fs::read_to_string(path).expect("Something went wrong reading the file");
-        
+        let code = str::to_string(code);
         Shader { code }
     }
 
     // Compile Shader
     pub fn compile( 
-        &mut self,
+        &self,
         context: &WebGlRenderingContext,
         shader_type: u32
     ) -> Result<WebGlShader, String> {

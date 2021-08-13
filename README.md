@@ -2,24 +2,26 @@
 Using WASM and Rust, with opengl for 3d rendering on web.
 https://docs.rs/web-sys/0.3.50/web_sys/
 
-### Requirements
+Prior Knowledge Needed
+### What Are We Going to Use
 - webpack  
 - wasm  
 - npm
 
 ### Getting Started
-1.
 ```
-wasm-pack build
+1. npm install
 
-./node_modules/.bin/webpack
+2. wasm-pack build
 
-npm run build
+3. ./node_modules/.bin/webpack
 
-npm run serve
+4. npm run build
+
+5. npm run serve
 ```
 
-### Basic Rust Program
+### Basic Rust WASM Program
 ``` rust
 
 fn foo() {
@@ -46,3 +48,7 @@ pub fn greet(name: &str) {
     unsafe {alert(&rc)};
 }
 ```
+
+For more Resources Look at
+ - Mozilla
+ https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API
