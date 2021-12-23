@@ -5,9 +5,7 @@ use wasm_bindgen::{prelude::wasm_bindgen, JsCast};
     #[path = "./gl/source.rs"] mod source; 
     mod math;
 
-use wasm_bindgen::prelude::*;
-use web_sys::{WebGlProgram, WebGlRenderingContext, WebGlShader, window, Document, HtmlElement,
-Element,console,Node,HtmlCanvasElement,HtmlCollection,WebGlBuffer,WebGlUniformLocation,CanvasRenderingContext2d};
+use web_sys::{WebGlProgram, WebGlRenderingContext ,WebGlBuffer,WebGlUniformLocation};
 use js_sys::WebAssembly;
 use WebGlRenderingContext as GL;
 #[wasm_bindgen]

@@ -1,4 +1,4 @@
-use std::task::Context;
+
 
 use wasm_bindgen::{prelude::wasm_bindgen, JsCast};
 #[path = "./render.rs"] mod render;
@@ -8,8 +8,7 @@ use wasm_bindgen::{prelude::wasm_bindgen, JsCast};
 
 extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
-use web_sys::{WebGlProgram, WebGlShader, window, Document, HtmlElement,
-Element,console,Node,HtmlCanvasElement,HtmlCollection,WebGlBuffer,WebGlUniformLocation,CanvasRenderingContext2d};
+use web_sys::{HtmlElement,HtmlCanvasElement};
 use web_sys::WebGlRenderingContext as GL;
 #[wasm_bindgen]
 extern "C" {

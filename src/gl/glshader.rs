@@ -5,7 +5,6 @@ use std::io::prelude::*;
 
 // object-oriented programing test
 use web_sys::{WebGlRenderingContext, WebGlShader};
-use wasm_bindgen::prelude::*;
 
 pub fn compile_shader( 
     source: &str,
