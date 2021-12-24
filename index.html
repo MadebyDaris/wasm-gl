@@ -23,7 +23,9 @@
             font-family: Roboto, sans-serif;
             margin: 0;
             transition: opacity ease-in 0.2s;
-            background-color: #FF335F
+            background-color: #FF335F;
+            width: 100vw;
+            height: 100vh;
         }
 
         main {
@@ -61,7 +63,16 @@
         justify-content: center;
         box-sizing: border-box;
       }
-
+      .container {
+        margin-top: 80px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        position:relative;
+        width: 80%;
+        height: 80%;
+        justify-self: center;
+        /* overflow: auto; */
+      }
       .webrs-catalog-list-icon {
             margin: 0 24px 0 12px;
       }
@@ -83,7 +94,9 @@
         </span>
         <span class="webrs-heading">WebGL Rust</span>
     </header>
-    <webrs-view></webrs-view>
+    <div class="container">
+      <webrs-view></webrs-view>
+    </div>
 </body>
 
 </html>

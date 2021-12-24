@@ -11,11 +11,14 @@ class WebrsView extends LitElement {
     return [
       css`
       canvas {
-        margin-top: 75px;
-        margin-left: 10px;
-        margin-right:10px;
         display: relative;
-        // background-color: white
+        width: 100%;
+        height: 100%;
+        // margin-top: 100px;
+        // margin-left: 10px;
+        // margin-right:10px;
+        // display: relative;
+        background-color: white;
         box-sizing: padding-box;
         border:black 3px solid;
       }
@@ -38,8 +41,8 @@ class WebrsView extends LitElement {
     const rust = import('../pkg/index');
     const canvas = this.shadowRoot.getElementById('rustCanvas');
     console.log(canvas)
-    canvas.width =1000;
-    canvas.height =  800;
+    canvas.width = window.innerWidth;
+    canvas.height =  window.innerHeight;
     const gl = canvas.getContext('webgl2', { antialias: true });
     
     rust.then(m => {
@@ -59,7 +62,7 @@ class WebrsView extends LitElement {
           if (currTime >= last_draw_time + throt ) {
               last_draw_time = currTime;
 
-              gl.viewport(0, 0, window.innerWidth, window.innerHeight);
+              gl.viewport(0, 0, canvas.width, canvas.height);
 
               let timePassed = currTime - initTime;
                 // myclient.update(timePassed, window.innerHeight, window.innerWidth);

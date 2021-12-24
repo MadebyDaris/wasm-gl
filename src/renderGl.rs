@@ -21,11 +21,11 @@ impl GlRender {
 
         ctx.use_program(Some(&program));
 
-        let vert: [f32; 9] = [
-        -0.7, -0.7, 0.0, 
-        0.7, -0.7, 0.0, 
-        0.0, 0.7, 0.0];
-
+        let vert: [f32; 12] = [
+            0.7,  0.7,  0.,
+            -0.7,  0.7, 0.,
+             0.7, -0.7, 0.,
+            -0.7, -0.7, 0.,];
         let position_attribute_location = ctx.get_attrib_location(&program, "position");
         let buffer = ctx.create_buffer().ok_or("failed to create buffer")?;
         ctx.bind_buffer(GL::ARRAY_BUFFER, Some(&buffer));
@@ -49,9 +49,9 @@ impl GlRender {
     }
     
     pub fn draw(&self, ctx: &GL) {
-        ctx.clear_color(0.0, 0.0, 0.0, 1.0);
+        ctx.clear_color(0.2, 0.3, 0.5, 1.0);
         ctx.clear(GL::COLOR_BUFFER_BIT);
-        ctx.draw_arrays(GL::TRIANGLES, 0, self.vert_count);
+        ctx.draw_arrays(GL::TRIANGLE_STRIP, 0, self.vert_count);
     }
 
     fn compile_shader( 
