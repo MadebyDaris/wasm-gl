@@ -19,7 +19,7 @@ module.exports = {
 
   plugins: [
     new WasmPackPlugin({
-      crateDirectory: __dirname, // Define where the root of the rust code is located (where the cargo.toml file is located)
+      crateDirectory: path.resolve(__dirname, "."), // Define where the root of the rust code is located (where the cargo.toml file is located)
     }),
     new CopyWebpackPlugin({
       patterns: [

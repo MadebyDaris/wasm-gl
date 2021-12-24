@@ -37,9 +37,10 @@ class WebrsView extends LitElement {
     super.firstUpdated();
     const rust = import('../pkg/index');
     const canvas = this.shadowRoot.getElementById('rustCanvas');
-    canvas.width = window.outerWidth - 200;
-    canvas.height = window.outerHeight - 265;
-    const gl = canvas.getContext('webgl', { antialias: true });
+    console.log(canvas)
+    canvas.width =1000;
+    canvas.height =  800;
+    const gl = canvas.getContext('webgl2', { antialias: true });
     
     rust.then(m => {
       if (!gl) {  
@@ -61,12 +62,14 @@ class WebrsView extends LitElement {
               gl.viewport(0, 0, window.innerWidth, window.innerHeight);
 
               let timePassed = currTime - initTime;
-                myclient.update(timePassed, window.innerHeight, window.innerWidth);
-                myclient.render();
+                // myclient.update(timePassed, window.innerHeight, window.innerWidth);
+              myclient.renderClient();
           }
       }
+      //myclient.renderClient()
       render();
-    });
+    }
+    ).catch(err => { console.log(err) });
   }
 }
   customElements.define("webrs-view", WebrsView);

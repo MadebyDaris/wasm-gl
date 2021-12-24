@@ -1,15 +1,11 @@
-
-
-use wasm_bindgen::{prelude::wasm_bindgen, JsCast};
-#[path = "./render.rs"] mod render;
-#[path = "./gl/glshader.rs"] mod shader;
-#[path = "./gl/glprogram.rs"] mod program;
-
-
 extern crate wasm_bindgen;
+use wasm_bindgen::JsCast;
+use std::option;
+use js_sys::Object;
+mod renderGl;
+// #[path = "./main.rs"] mod main;
 use wasm_bindgen::prelude::*;
-use web_sys::{HtmlElement,HtmlCanvasElement};
-use web_sys::WebGlRenderingContext as GL;
+use web_sys::{HtmlElement,HtmlCanvasElement, WebGl2RenderingContext as GL};
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
@@ -17,51 +13,34 @@ extern "C" {
 }
 
 #[wasm_bindgen]
-pub fn init_ctx(c: HtmlElement) -> Result<GL, JsValue> {
-    // let window = window().unwrap();
-    // let document = window.document().unwrap();
-    // let canvas = document.get_element_by_id("rustCanvas").unwrap();
-    let canvas:HtmlCanvasElement = c.dyn_into::<HtmlCanvasElement>()?;
-    let context = canvas.get_context("webgl")?
-    .unwrap().dyn_into::<GL>()?;
-
-    context.enable(GL::BLEND);
-    context.blend_func(GL::SRC_ALPHA, GL::ONE_MINUS_SRC_ALPHA);
-    context.clear_color(0.5, 0.2, 0.5, 1.0);
-    context.clear_depth(1.);
-    Ok(context)
-}
-
-#[wasm_bindgen]
 pub struct GlClient {
-    program2D: render::gl_render,
-    context: GL
+    render: renderGl::GlRender,
+    ctx: GL,
 }
+
 #[wasm_bindgen]
 impl GlClient {
     #[wasm_bindgen(constructor)]
-    pub fn new(c: HtmlElement) -> Self {
+    pub fn new(c: HtmlElement) -> Result<GlClient, JsValue> {
         console_error_panic_hook::set_once();
+        
+        let canvas:HtmlCanvasElement = c.dyn_into::<HtmlCanvasElement>()?;
+        match canvas.get_context("webgl2")? {
+                // The division was valid
+                Some(x) =>{ let ctx = x.dyn_into::<GL>()?;
+                    Ok( GlClient{ render:renderGl::GlRender::new(&ctx).unwrap(),
+                        ctx: ctx })},
+                // The division was invalid
+                None => {
+                    return Err(JsValue::from("Error counld't get the canvas elemet."))
+                }
+        }
 
-        let context: GL = init_ctx(c).unwrap();
-        Self{ program2D: render::gl_render::new(&context), context: context}
-    }
-    pub fn update( &self ) {
-        // Ok(());
-    }
-    pub fn render( &self ) {
-        self.context.clear(GL::COLOR_BUFFER_BIT | GL::DEPTH_BUFFER_BIT);
-
-        self.program2D.render(
-            &self.context,
-            0.,
-            10.,
-            0.,
-            10.,
-            20.,
-            30.,
-        )
     }
     
-}
+    pub fn renderClient( &self ) {
 
+        self.render.draw(&self.ctx)
+        
+    }
+}

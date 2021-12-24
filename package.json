@@ -6,8 +6,8 @@
   "scripts": {
     "build": "webpack --mode production",
     "serve": "webpack-dev-server",
-    "serve-wasm": "wasm-server",
-    "wasm-build": "wasm-pack build"
+    "swasm": "wasm-server",
+    "wbuild": "wasm-pack build"
   },
   "author": "",
   "license": "ISC",
