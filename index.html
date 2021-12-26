@@ -64,22 +64,35 @@
         box-sizing: border-box;
       }
       .container {
-        margin-top: 80px;
+        margin-top: 90px;
         margin-left: 10px;
-        margin-bottom: 10px;
-        position:relative;
-        width: 80%;
-        height: 80%;
-        justify-self: center;
+        width: 100%;
+        height: 90%;
+        padding: 0;
+        margin: auto;
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
         /* overflow: auto; */
       }
       .webrs-catalog-list-icon {
             margin: 0 24px 0 12px;
       }
       .webrs-heading {
-        margin-left: 8px;
+        margin-left: 42%;
       }
-    </style>
+      .footer {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background-color: #3460FF;
+      color: white;
+      text-align: center;}
+        </style>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
 </head>
@@ -98,5 +111,6 @@
       <webrs-view></webrs-view>
     </div>
 </body>
+<div class="footer"> <p>TEST</p></div>
 
 </html>

@@ -11,17 +11,17 @@ class WebrsView extends LitElement {
     return [
       css`
       canvas {
-        display: relative;
-        width: 100%;
-        height: 100%;
-        // margin-top: 100px;
-        // margin-left: 10px;
-        // margin-right:10px;
-        // display: relative;
-        background-color: white;
-        box-sizing: padding-box;
-        border:black 3px solid;
-      }
+        display: block;
+        width: 97%;
+        height: 90%;
+        margin: auto;
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border: #3460FF 6px solid;
       `,
     ];
   }
@@ -66,13 +66,13 @@ class WebrsView extends LitElement {
 
               let timePassed = currTime - initTime;
                 // myclient.update(timePassed, window.innerHeight, window.innerWidth);
-              myclient.renderClient();
+              myclient.render_client();
           }
       }
       //myclient.renderClient()
       render();
     }
-    ).catch(err => { console.log(err) });
+    ).catch(err => { console.log("Rust Error "+ err) });
   }
 }
   customElements.define("webrs-view", WebrsView);
